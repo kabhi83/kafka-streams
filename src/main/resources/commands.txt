@@ -1,0 +1,31 @@
+kafka/bin/kafka-topics.sh --create \
+--zookeeper localhost:2181 \
+--replication-factor 1 \
+--partitions 3 \
+--topic word-count-input
+
+bin/kafka-console-consumer.sh \
+--topic word-count-output \
+--from-beginning \
+--bootstrap-server localhost:9092
+
+bin/kafka-console-consumer.sh \
+    --bootstrap-server localhost:9092   \
+    --topic word-cout-output   \
+    --from-beginning  \
+    --formatter kafka.tools.DefaultMessageFormatter  \
+    --property print.key=true   \
+    --property print.value=true \
+	--property key-deserializer=org.apache.kafka.common.serialization.StringDeserializer 	\
+	--property value-deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+bin/kafka-console-producer.sh --topic word-count-input --bootstrap-server localhost:9092
+
+
+##Windows
+ .\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic word-count-input
+ .\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic word-count-output
+
+ .\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic word-count-output --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key-deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value-deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+ .\kafka-console-producer.bat --topic word-count-input --bootstrap-server localhost:9092
